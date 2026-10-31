@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Add catalog to Folio</title>
+<link rel="icon" href="../../icon.png">
+<style>
+:root{--bg:#fbfaf7;--fg:#1c1c1a;--muted:#5f5a52;--line:#e6e0d6;--accent:#2e4a3f;--on-accent:#f4e9d8;--link:#2e6b55}
+@media (prefers-color-scheme:dark){:root{--bg:#1e1f21;--fg:#e4e0d8;--muted:#a49e94;--line:#34363a;--accent:#9cc4b2;--on-accent:#1e1f21;--link:#9cc4b2}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.6 -apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+main{max-width:560px;margin:0 auto;padding:40px 20px 64px}
+nav{display:flex;gap:12px;align-items:center;margin-bottom:28px;font-size:15px}
+nav img{width:32px;height:32px;border-radius:8px}
+nav a{color:var(--fg);text-decoration:none;font-weight:600}
+h1{font-size:26px;line-height:1.3;margin:0 0 6px}
+.muted{color:var(--muted);font-size:15px}
+.card{border:1px solid var(--line);border-radius:14px;padding:16px;margin:20px 0;word-break:break-all}
+.card b{display:block;word-break:normal;margin-bottom:4px}
+ul{margin:8px 0 0;padding-left:20px}
+.btn{display:block;text-align:center;background:var(--accent);color:var(--on-accent);text-decoration:none;font-weight:600;border-radius:999px;padding:14px 20px;margin:12px 0}
+.btn.secondary{background:transparent;color:var(--link);border:1px solid var(--line)}
+a{color:var(--link)}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<main>
+<nav><img src="../../icon.png" alt=""><a href="../../">Tilde Works</a></nav>
+
+<div id="ok" class="hidden">
+  <h1 data-ru="Каталог для Folio" data-en="Catalog for Folio">Catalog for Folio</h1>
+  <p class="muted" data-ru="Откройте ссылку в Folio — каталог добавится вместе с зеркалами. Перед добавлением Folio покажет, что именно добавляется."
+     data-en="Open this link in Folio to add the catalog with its mirrors. Folio shows what is being added before saving it.">Open this link in Folio to add the catalog with its mirrors.</p>
+  <div class="card">
+    <b id="title"></b>
+    <span id="url"></span>
+    <div id="mirrors-block" class="hidden">
+      <p class="muted" style="margin:12px 0 0" data-ru="Зеркала:" data-en="Mirrors:">Mirrors:</p>
+      <ul id="mirrors"></ul>
+    </div>
+  </div>
+  <a id="open" class="btn" href="#" data-ru="Открыть в Folio" data-en="Open in Folio">Open in Folio</a>
+  <a class="btn secondary" href="https://play.google.com/store/apps/details?id=studio.tildeworks.folio" data-ru="Установить Folio из Google Play" data-en="Get Folio on Google Play">Get Folio on Google Play</a>
+  <p class="muted" data-ru="Другая читалка? Скопируйте адрес каталога выше — он подойдёт любому OPDS-приложению."
+     data-en="Using another reader? Copy the catalog address above — it works in any OPDS app.">Using another reader? Copy the catalog address above.</p>
+</div>
+
+<div id="bad" class="hidden">
+  <h1 data-ru="Ссылка неполная" data-en="Incomplete link">Incomplete link</h1>
+  <p class="muted" data-ru="В ссылке нет адреса каталога. Попросите того, кто её прислал, поделиться ещё раз из Folio: меню каталога → «Поделиться ссылкой»."
+     data-en="The link has no catalog address. Ask the sender to share it again from Folio: catalog menu → Share link.">The link has no catalog address.</p>
+</div>
+</main>
+<script>
+(function () {
+  var ru = /^(ru|uk|be)/i.test(navigator.language || '');
+  document.documentElement.lang = ru ? 'ru' : 'en';
+  document.querySelectorAll('[data-ru]').forEach(function (el) { el.textContent = el.getAttribute(ru ? 'data-ru' : 'data-en'); });
+
+  var params = new URLSearchParams(location.search);
+  var url = params.get('url');
+  if (!url) { document.getElementById('bad').classList.remove('hidden'); return; }
+  document.getElementById('ok').classList.remove('hidden');
+  var title = params.get('title');
+  document.title = (title || 'Catalog') + ' — Folio';
+  document.getElementById('title').textContent = title || '';
+  document.getElementById('url').textContent = url;
+  var mirrors = params.getAll('mirror');
+  if (mirrors.length) {
+    document.getElementById('mirrors-block').classList.remove('hidden');
+    var ul = document.getElementById('mirrors');
+    mirrors.forEach(function (m) { var li = document.createElement('li'); li.textContent = m; ul.appendChild(li); });
+  }
+  // Chrome на Android: intent:// откроет Folio, а без него — Google Play. Остальные браузеры — folio://.
+  var query = location.search.replace(/^\?/, '');
+  var play = 'https://play.google.com/store/apps/details?id=studio.tildeworks.folio';
+  var isAndroid = /Android/i.test(navigator.userAgent);
+  document.getElementById('open').href = isAndroid
+    ? 'intent://add?' + query + '#Intent;scheme=folio;package=studio.tildeworks.folio;S.browser_fallback_url=' + encodeURIComponent(play) + ';end'
+    : 'folio://add?' + query;
+})();
+</script>
+</body>
+</html>
