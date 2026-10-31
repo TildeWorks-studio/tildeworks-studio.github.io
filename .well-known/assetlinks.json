@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "studio.tildeworks.folio",
+      "sha256_cert_fingerprints": [
+        "F3:E1:CD:B9:18:9B:99:86:96:24:DF:87:36:55:4B:36:CE:C8:2A:14:24:45:2E:13:19:5D:F7:E6:7C:4C:60:9E"
+      ]
+    }
+  }
+]
