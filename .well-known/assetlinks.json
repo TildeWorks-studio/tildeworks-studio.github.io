@@ -1,11 +1,17 @@
 [
   {
-    "relation": ["delegate_permission/common.handle_all_urls"],
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
     "target": {
       "namespace": "android_app",
       "package_name": "studio.tildeworks.folio",
       "sha256_cert_fingerprints": [
-        "F3:E1:CD:B9:18:9B:99:86:96:24:DF:87:36:55:4B:36:CE:C8:2A:14:24:45:2E:13:19:5D:F7:E6:7C:4C:60:9E"
+        "F3:E1:CD:B9:18:9B:99:86:96:24:DF:87:36:55:4B:36:CE:C8:2A:14:24:45:2E:13:19:5D:F7:E6:7C:4C:60:9E",
+        "34:8A:39:7C:29:B7:D4:D7:91:C2:8F:DD:E1:44:AA:C9:D1:3F:70:BD:57:AA:8D:B1:9F:76:10:AA:60:67:35:2F",
+        "41:CC:98:51:36:69:9A:E6:02:B0:45:F5:2D:19:0E:14:5A:7E:79:81:CA:D4:56:A3:86:59:85:EF:F5:2F:AD:58",
+        "A8:93:5E:3F:7E:D3:9C:D1:6E:DF:75:BE:28:D6:C9:7B:D1:20:35:D2:3B:13:6E:55:15:71:F7:DC:50:BE:C7:2F"
       ]
     }
   }
